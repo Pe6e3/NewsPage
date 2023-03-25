@@ -1,0 +1,148 @@
+﻿@model NewsPage.Models.Post
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Post</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MainImage" class="control-label"></label>
+                <input asp-for="MainImage" class="form-control" />
+                <span asp-validation-for="MainImage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Text" class="control-label"></label>
+                <input asp-for="Text" class="form-control" />
+                <span asp-validation-for="Text" class="text-danger"></span>
+            </div>
+        
+
+
+            @*..*@
+            <div class="form-group">
+                @Html.LabelFor(model => model.Theme)
+                @Html.DropDownListFor(m => m.ThemeId, (SelectList)ViewBag.ThemeList, "Выберите тему", new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label for="Images">Images:</label>
+                <input type="file" name="Images" multiple />
+            </div>
+
+
+            @*..*@
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
+@*CHatGPT:*@
+@*
+@model Post
+
+<h2>Create Post</h2>
+
+@using (Html.BeginForm("Create", "Posts", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.Title)
+        @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.MainImage)
+        @Html.TextBoxFor(model => model.MainImage, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Text)
+        @Html.TextAreaFor(model => model.Text, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Theme)
+        @Html.DropDownListFor(m => m.ThemeId, (SelectList)ViewBag.ThemeList, "Выберите тему", new { @class = "form-control" })
+
+    </div>
+
+    <div class="form-group">
+        <label for="Images">Images:</label>
+        <input type="file" name="Images" multiple />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+
+
+   
+
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.MainImage, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type="file" name="MainImage" id="MainImage" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Images, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type="file" name="Images" id="Images" multiple />
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ThemeId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.ThemeId, new SelectList(ViewBag.Themes, "Id", "Name"), "-- Select Theme --", new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+}
+*@
