@@ -1,48 +1,31 @@
 ﻿@model IEnumerable<NewsPage.Models.Post>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Лента новостей";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 
 
-<table>
-
-    <tbody>
-        @foreach (var item in Model)
-        {
-
-            <tr>
-                <h2 class="m-2 text-center">
-
-                    @Html.DisplayFor(modelItem => item.Title)
-                </h2>
-            </tr>
-
-            <div class="m-4 text-center">
-
-                <img src="@Html.DisplayFor(modelItem => item.MainImage)" style="height:300px; width: auto">
-            </div>
-
-            <tr class="m-4 text-center">
-                <div class="m-4 text-center">
-                    @Html.DisplayFor(modelItem => item.Text)
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            @foreach (var post in Model)
+            {
+                <div class="card mb-3">
+                    @if (!string.IsNullOrEmpty(post.MainImage))
+                    {
+                        <img src="@Html.DisplayFor(modelItem => post.MainImage)" style="height:300px; width: auto" class="card-img-top" alt="...">
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@post.Title</h5>
+                        <p class="card-text">@Html.Raw(post.Text)</p>
+                    </div>
+                    <div class="card-footer bg-transparent text-muted">
+                        @*<span>@post.Author</span> | <span>@post.DatePosted.ToString("MMMM dd, yyyy")</span>*@
+                        <a href="@Url.Action("Details", "Posts", new { id = post.PostId })" class="stretched-link"></a>
+                    </div>
                 </div>
-            </tr>
-
-            <tr class="mt-2 mb-5 text-center">
-                <div class="m-4 text-center">
-                    <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.PostId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.PostId">Delete</a>
-                </div>
-            </tr>
-
-        }
-    </tbody>
-</table>
+            }
+        </div>
+    </div>
+</div>

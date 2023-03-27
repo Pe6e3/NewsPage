@@ -100,8 +100,8 @@ namespace NewsPage.Controllers
         //{
         //    if (ModelState.IsValid)
         //    {
-        //        _context.Add(post);
-        //        await _context.SaveChangesAsync();
+        //        _db.Add(post);
+        //        await _db.SaveChangesAsync();
         //        return RedirectToAction(nameof(Index));
         //    }
         //    return View(post);
@@ -130,15 +130,13 @@ namespace NewsPage.Controllers
             return View(post);
         }
 
-        // POST: Posts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PostId,Title,MainImage,Text")] Post post)
+        public async Task<IActionResult> Edit(int id, Post post, List<IFormFile> Images)
         {
-            ViewBag.ThemeId = new SelectList(_db.Themes, "ThemeId", "Name");
-            ViewBag.ThemeList = new SelectList(_db.Themes, "ThemeId", "Name");
             if (id != post.PostId)
             {
                 return NotFound();
@@ -148,8 +146,29 @@ namespace NewsPage.Controllers
             {
                 try
                 {
+                    // обновляем основную информацию о посте
                     _db.Update(post);
                     await _db.SaveChangesAsync();
+
+                    // обновляем изображения поста
+                    if (Images != null && Images.Count > 0)
+                    {
+                        foreach (var image in Images)
+                        {
+                            if (image != null && image.Length > 0)
+                            {
+
+                                // создаем новый объект Image и добавляем его в БД
+                                Image newImage = new Image
+                                {
+                                    PostId = post.PostId,
+                                    Path = "filePath1111"
+                                };
+                                _db.Images.Add(newImage);
+                            }
+                        }
+                        await _db.SaveChangesAsync();
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -164,8 +183,10 @@ namespace NewsPage.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.ThemeList = new SelectList(_db.Themes, "Id", "Name", post.ThemeId);
             return View(post);
         }
+
 
         // GET: Posts/Delete/5
         public async Task<IActionResult> Delete(int? id)
